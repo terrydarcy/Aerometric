@@ -72,11 +72,6 @@ const Home = ({navigation}) => {
 };
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-/*
-  <Image
-  source={require('../res/plane.png')}
-  style={{width: 100, height: 100}}/>
-*/
 
 const styles = StyleSheet.create({
   container: {

@@ -1,0 +1,32 @@
+ [{
+     "aircraft": {
+        "iata": "B763", "icao": "B763", "icao24": "C0816E", "registration": "C-GXAJ"
+    },
+    
+    "airline": {
+        "iata": "W8", "icao": "CJT", "name": "Cargojet"
+        }, 
+    
+    "arrival": {
+        "actual": null, "actual_runway": null, "airport": "East Midlands", "baggage": null, 
+        "delay": null, "estimated": "2020-11-12T19:29:00+00:00", 
+        "estimated_runway": null, "gate": null, "iata": "EMA", "icao": "EGNX", "scheduled": "2020-11-12T19:29:00+00:00", "terminal": null, "timezone": "Europe/London"
+        },
+         
+            "departure": {
+                "actual": "2020-11-12T06:59:00+00:00", "actual_runway": "2020-11-12T06:59:00+00:00", "airport": "Cincinnati/Northern Kentucky", "delay": 34, "estimated": "2020-11-12T06:25:00+00:00",
+                 "estimated_runway": "2020-11-12T06:59:00+00:00", "gate": null, "iata": "CVG", "icao": "KCVG",
+                  "scheduled": "2020-11-12T06:25:00+00:00", "terminal": null, "timezone": "America/New_York"
+                  }, 
+                  "flight": {
+                      "codeshared": null, "iata": "W8979", "icao": "CJT979", "number": "979"
+                    }, 
+                  
+                  "flight_date": "2020-11-12", 
+                  "flight_status": "active", 
+                  
+                  "live": {
+                      "altitude": 10668, "direction": 95.23, "is_ground": false, "latitude": 53.92, "longitude": -12.17, "speed_horizontal": 935.46, "speed_vertical": -1.188, "updated": "2020-11-12T17:34:00+00:00"
+                      }
+                      }
+ ]
