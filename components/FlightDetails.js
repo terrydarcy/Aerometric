@@ -1,3 +1,4 @@
+import {loadPartialConfig} from '@babel/core';
 import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {withOrientation} from 'react-navigation';
@@ -15,7 +16,7 @@ const FlightDetails = ({navigation, props}) => {
     setLatitude(props.latitude);
     setLongitude(props.longitude);
     setAltitude(props.altitude);
-  }, [props.color, props.title]);
+  });
   return (
     <View style={styles.container}>
       <View style={styles.detailsContainer}>
@@ -25,6 +26,12 @@ const FlightDetails = ({navigation, props}) => {
         <Text style={[styles.text]}> longitude: {longitude}</Text>
         <Text style={[styles.text]}> latitude: {latitude}</Text>
         <Text style={[styles.text]}> altitude: {altitude}</Text>
+        <Text style={[styles.text]}>
+          {'\n'}
+          Flight {flightCode} is cruising at an altitude {'\n'}
+          of {altitude}m, with a longitude of {longitude} {'\n'}
+          and a latitude of {latitude}.
+        </Text>
       </View>
     </View>
   );

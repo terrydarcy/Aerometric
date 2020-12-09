@@ -18,11 +18,7 @@ const accentColor = '#97c8ff';
 
 function SearchBox() {
   const [textVal, setText] = useState('');
-  var resultReturned = false;
-
-  var apiData = {
-    title: 'Test',
-  };
+  const [apiReturn, setApiReturn] = useState();
 
   const searchFlightCode = (flightCode) => {
     OpenSkyApiCall(flightCode);
@@ -30,35 +26,36 @@ function SearchBox() {
 
   const OpenSkyApiCall = (flightCode) => {
     var lowerCaseCode = flightCode.toLowerCase();
-    return fetch(
-      'https://opensky-network.org/api/states/all?time=1458564121&icao24=3c6444',
-    )
-      .then((response) => response.json())
-      .then((json) => {
-        resultReturned = true;
-        apiData = {
-          flightCode: flightCode,
-          latitude: json.states[0][6],
-          longitude: json.states[0][5],
-          altitude: json.states[0][13],
-        };
-        console.log(
-          'Flight ' +
-            flightCode +
-            ' is cruising at an altitude of ' +
-            json.states[0][13] +
-            'm, with a latitude of ' +
-            json.states[0][6] +
-            ' and a longitude of ',
-          json.states[0][5],
-        );
-      })
-      .catch((error) => {
-        console.error('ERROR: ' + error);
-      });
+    return (
+      fetch(
+        'https://opensky-network.org/api/states/all?time=1458564121&icao24=3c6444',
+      )
+        .then((response) => response.json())
+        //TODO: check result
+        .then((json) => {
+          var apiData = {
+            flightCode: flightCode,
+            latitude: json.states[0][6],
+            longitude: json.states[0][5],
+            altitude: json.states[0][13],
+          };
+          setApiReturn(apiData);
+          console.log(apiReturn);
+        })
+        .catch((error) => {
+          console.error('ERROR: ' + error);
+        })
+    );
   };
+  const checkSearch = () => {
+    if (apiReturn != undefined) {
+      return createCard(apiReturn);
+    }
+  };
+  function createCard(apiData) {
+    return <FlightDetails props={apiData} />;
+  }
 
-  console.log(resultReturned);
   return (
     <View style={styles.searchArea}>
       <View
@@ -85,7 +82,7 @@ function SearchBox() {
           onSubmitEditing={() => searchFlightCode(textVal.text)}
         />
       </View>
-      <FlightDetails props={apiData} />
+      {apiReturn != undefined ? createCard(apiReturn) : null}
     </View>
   );
 }
