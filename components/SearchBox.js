@@ -11,13 +11,54 @@ import {
 } from 'react-native';
 import {material, sanFranciscoSpacing} from 'react-native-typography';
 import image from '../res/plane.jpg';
+import FlightDetails from '../components/FlightDetails';
 import Icon from 'react-native-vector-icons/FontAwesome';
 const mainColor = '#070707';
 const accentColor = '#97c8ff';
 
 function SearchBox() {
   const [textVal, setText] = useState('');
+  var resultReturned = false;
 
+  var apiData = {
+    title: 'Test',
+  };
+
+  const searchFlightCode = (flightCode) => {
+    OpenSkyApiCall(flightCode);
+  };
+
+  const OpenSkyApiCall = (flightCode) => {
+    var lowerCaseCode = flightCode.toLowerCase();
+    return fetch(
+      'https://opensky-network.org/api/states/all?time=1458564121&icao24=3c6444',
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        resultReturned = true;
+        apiData = {
+          flightCode: flightCode,
+          latitude: json.states[0][6],
+          longitude: json.states[0][5],
+          altitude: json.states[0][13],
+        };
+        console.log(
+          'Flight ' +
+            flightCode +
+            ' is cruising at an altitude of ' +
+            json.states[0][13] +
+            'm, with a latitude of ' +
+            json.states[0][6] +
+            ' and a longitude of ',
+          json.states[0][5],
+        );
+      })
+      .catch((error) => {
+        console.error('ERROR: ' + error);
+      });
+  };
+
+  console.log(resultReturned);
   return (
     <View style={styles.searchArea}>
       <View
@@ -44,54 +85,9 @@ function SearchBox() {
           onSubmitEditing={() => searchFlightCode(textVal.text)}
         />
       </View>
+      <FlightDetails props={apiData} />
     </View>
   );
-}
-function searchOpenSky(flightCode) {
-  var xhr = new XMLHttpRequest();
-
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState == 4) {
-      //var result = JSON.parse(xhr.responseText);
-      console.log(xhr.responseText);
-    }
-  };
-  xhr.open(
-    'GET',
-    'https://TERRYD98:OPENSKYPASSWORD123@opensky-network.org/api/tracks/all?icao24=4CA9D1&time=0',
-    //    'https://opensky-network.org/api/tracks/all?icao24=4CA9D1&time=0',
-    true,
-  );
-  xhr.send(null);
-}
-
-function searchFlightCode(flightCode) {
-  var xhr = new XMLHttpRequest();
-
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState == 4) {
-      var result = JSON.parse(xhr.responseText);
-      //console.log(xhr.responseText);
-      console.log(result.data[0]);
-      console.log(
-        'Flight ' +
-          flightCode +
-          ' is cruising at an altitude of ' +
-          result.data[0].live.altitude +
-          'ft with a latitude of ' +
-          result.data[0].live.latitude +
-          ' and a longitude of ' +
-          result.data[0].live.longitude,
-      );
-    }
-  };
-  xhr.open(
-    'GET',
-    'http://api.aviationstack.com/v1/flights?access_key=fe5b0803e28dda490dbb66b78ec409e6&flight_iata=' +
-      flightCode,
-    true,
-  );
-  xhr.send(null);
 }
 
 const styles = StyleSheet.create({});

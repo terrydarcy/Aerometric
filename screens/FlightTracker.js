@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -6,8 +6,8 @@ import {
   ImageBackground,
   Image,
   StatusBar,
+  Button,
   Dimensions,
-  Animated,
 } from 'react-native';
 import Header from '../components/Header';
 import SearchBox from '../components/SearchBox';
@@ -17,16 +17,8 @@ import {TouchableHighlight} from 'react-native-gesture-handler';
 const mainColor = '#070707';
 const accentColor = '#97c8ff';
 
-const Home = ({navigation}) => {
-  const searchAnim = useRef(new Animated.Value(0)).current; // Initial value for opacity: 0
-
-  React.useEffect(() => {
-    Animated.timing(searchAnim, {
-      toValue: 500,
-      duration: 10000,
-    }).start();
-  }, [searchAnim]);
-
+function onPressButton() {}
+const FlightTracker = ({navigation}) => {
   return (
     <View style={styles.container}>
       <StatusBar
@@ -34,21 +26,7 @@ const Home = ({navigation}) => {
         backgroundColor="transparent"
         barStyle="dark-content"
       />
-      <Image
-        source={require('../res/flightTracker_bg_top.png')}
-        style={styles.bg}
-      />
-
-      <Animated.View
-        style={{
-          left: searchAnim, // Bind opacity to animated value
-        }}>
-        <Image
-          id="bottom_background"
-          source={require('../res/flightTracker_bg_bottom.png')}
-          style={styles.bg}
-        />
-      </Animated.View>
+      <Image source={require('../res/home.png')} style={styles.bg} />
 
       <View
         style={{
@@ -62,18 +40,8 @@ const Home = ({navigation}) => {
           style={{
             padding: 10,
             borderRadius: 40,
-            flex: 1,
           }}
-          onPress={() => navigation.openDrawer}
-          underlayColor="grey">
-          <Icon name="bars" size={32} color={mainColor} />
-        </TouchableHighlight>
-
-        <TouchableHighlight
-          style={{
-            padding: 10,
-            borderRadius: 40,
-          }}
+          onPress={onPressButton}
           underlayColor="grey">
           <Icon name="user-circle" size={32} color={mainColor} />
         </TouchableHighlight>
@@ -84,6 +52,10 @@ const Home = ({navigation}) => {
           marginHorizontal: 20,
         }}>
         <Text style={styles.header}>Aerometric</Text>
+        <Text style={styles.body}>Search for a flight below</Text>
+      </View>
+      <View style={{marginTop: 80}}>
+        <SearchBox />
       </View>
     </View>
   );
@@ -114,4 +86,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+export default FlightTracker;
