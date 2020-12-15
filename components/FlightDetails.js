@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     margin: 20,
+    borderRadius: 30,
   },
   flight_title: {
     fontSize: 20,
