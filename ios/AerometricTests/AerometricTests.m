@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface AeroAppTests : XCTestCase
+@interface AerometricTests : XCTestCase
 
 @end
 
-@implementation AeroAppTests
+@implementation AerometricTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL(^)(UIView *view))test
 {

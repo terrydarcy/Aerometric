@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>AeroApp</string>
+	<string>Aerometric</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -55,7 +55,6 @@
 	<false/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Roboto-Black.ttf</string>
 		<string>Roboto-BlackItalic.ttf</string>
 		<string>Roboto-Bold.ttf</string>
 		<string>Roboto-BoldItalic.ttf</string>
