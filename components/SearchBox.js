@@ -28,7 +28,7 @@ function SearchBox() {
     var lowerCaseCode = flightCode.toLowerCase();
     return (
       fetch(
-        'https://opensky-network.org/api/states/all?time=1458564121&icao24=3c6444',
+        'https://opensky-network.org/api/states/all?icao24=' + lowerCaseCode,
       )
         .then((response) => response.json())
         //TODO: check result
@@ -47,11 +47,7 @@ function SearchBox() {
         })
     );
   };
-  const checkSearch = () => {
-    if (apiReturn != undefined) {
-      return createCard(apiReturn);
-    }
-  };
+
   function createCard(apiData) {
     return <FlightDetails props={apiData} />;
   }
