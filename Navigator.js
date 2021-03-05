@@ -1,27 +1,66 @@
 import React from 'react';
-import {View, Text, StyleSheet, ImageBackground, StatusBar} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import FlightTracker from './screens/FlightTracker';
-import HomeScreen from './screens/Home';
-import NavigationMenu from './screens/NavigationMenu';
-import {createStackNavigator} from '@react-navigation/stack';
-import Home from './screens/Home';
+import FlightTabNavigation from './navigators/FlightTabNavigation';
+import CovidTracker from './screens/CovidTracker';
+import Profile from './screens/Profile';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {ImageBackground, StyleSheet, Dimensions, View} from 'react-native';
+const image = {uri: 'https://reactjs.org/logo-og.png'};
 
-const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
 const Navigator = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="FlightTracker"
-        screenOptions={{
-          headerShown: false,
-        }}>
-        <Stack.Screen name="FlightTracker" component={FlightTracker} />
-        <Stack.Screen name="NavigationMenu" component={NavigationMenu} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <View style={styles.container}>
+      <ImageBackground source={image} style={styles.image}>
+        <NavigationContainer style={{backgroundColor: 'transparent'}}>
+          <Tab.Navigator
+            screenOptions={({route}) => ({
+              tabBarIcon: ({focused, color, size}) => {
+                let iconName;
+                if (route.name === 'CovidTracker') {
+                  iconName = focused ? 'earth' : 'earth-outline';
+                } else if (route.name === 'Flights') {
+                  iconName = focused ? 'airplane' : 'airplane-outline';
+                } else if (route.name === 'Profile') {
+                  iconName = focused
+                    ? 'person-circle'
+                    : 'person-circle-outline';
+                }
+
+                // You can return any component that you like here!
+                return <Ionicons name={iconName} size={size} color={color} />;
+              },
+              transparentCard: true,
+            })}
+            tabBarOptions={{
+              activeTintColor: '#2B59C3',
+              inactiveTintColor: 'gray',
+              keyboardHidesTabBar: true,
+              transparentCard: true,
+            }}
+            style={{backgroundColor: 'transparent'}}>
+            <Tab.Screen name="CovidTracker" component={CovidTracker} />
+            <Tab.Screen name="Flights" component={FlightTabNavigation} />
+            <Tab.Screen name="Profile" component={Profile} />
+          </Tab.Navigator>
+        </NavigationContainer>
+      </ImageBackground>
+    </View>
   );
 };
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+  },
+
+  image: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+  },
+});
 
 export default Navigator;

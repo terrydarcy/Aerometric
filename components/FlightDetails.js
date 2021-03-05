@@ -1,26 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {View, Image, StyleSheet, Text} from 'react-native';
-import {
-  Avatar,
-  Button,
-  Card,
-  Title,
-  Paragraph,
-  Subheading,
-} from 'react-native-paper';
+import {Card, Subheading} from 'react-native-paper';
 
-const FlightDetails = ({navigation, props}) => {
-  const [flightCode, setFlightCode] = useState('');
-  const [latitude, setLatitude] = useState('');
-  const [longitude, setLongitude] = useState('');
-  const [altitude, setAltitude] = useState('');
-
-  useEffect(() => {
-    setFlightCode(props.flightCode);
-    setLatitude(props.latitude);
-    setLongitude(props.longitude);
-    setAltitude(props.altitude);
-  });
+const FlightDetails = ({apiReturn}) => {
   const leftContent = () => {
     return (
       <Image
@@ -40,31 +22,35 @@ const FlightDetails = ({navigation, props}) => {
       <Card style={styles.flightContainer}>
         <Card.Title
           style={{paddingLeft: 10}}
-          title={'Flight ' + flightCode}
+          title={'Flight ' + apiReturn.flightCode.toUpperCase()}
           subtitle="ICAO 24-BIT ADDRESS"
           left={leftContent}
         />
         <Card.Content>
           <Subheading>
             Longitude:
-            <Text style={styles.apiDataTextColor}> {longitude}</Text>
+            <Text style={styles.apiDataTextColor}> {apiReturn.longitude}</Text>
           </Subheading>
           <Subheading>
             Latitude:
-            <Text style={styles.apiDataTextColor}> {latitude}</Text>
+            <Text style={styles.apiDataTextColor}> {apiReturn.latitude}</Text>
           </Subheading>
           <Subheading>
             Altitude:
-            <Text style={styles.apiDataTextColor}> {altitude}m</Text>
+            <Text style={styles.apiDataTextColor}> {apiReturn.altitude}m</Text>
           </Subheading>
           <Subheading>
             {'\n'}
-            Flight <Text style={styles.apiDataTextColor}>{flightCode}</Text> is
-            cruising at an altitude of{' '}
-            <Text style={styles.apiDataTextColor}>{altitude}m</Text>, with a
-            longitude of{' '}
-            <Text style={styles.apiDataTextColor}>{longitude}</Text> and a
-            latitude of <Text style={styles.apiDataTextColor}>{latitude}</Text>.
+            Flight{' '}
+            <Text style={styles.apiDataTextColor}>
+              {apiReturn.flightCode.toUpperCase()}
+            </Text>{' '}
+            is cruising at an altitude of{' '}
+            <Text style={styles.apiDataTextColor}>{apiReturn.altitude}m</Text>,
+            with a longitude of{' '}
+            <Text style={styles.apiDataTextColor}>{apiReturn.longitude}</Text>{' '}
+            and a latitude of{' '}
+            <Text style={styles.apiDataTextColor}>{apiReturn.latitude}</Text>.
           </Subheading>
         </Card.Content>
 
@@ -79,7 +65,7 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     height: 200,
     flexDirection: 'column',
-    marginTop: 50,
+    marginTop: 80,
     justifyContent: 'center',
   },
   detailsContainer: {

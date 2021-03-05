@@ -1,13 +1,21 @@
-import React from 'react';
-import {View, Text, StyleSheet, ImageBackground, StatusBar} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import React, {Fragment, useEffect} from 'react';
 import Navigator from './Navigator';
-
-const Stack = createStackNavigator();
-
+import SplashScreen from 'react-native-splash-screen';
+import {StatusBar} from 'react-native';
 const App = () => {
-  return <Navigator />;
-};
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
 
+  return (
+    <Fragment>
+      <StatusBar
+        translucent
+        backgroundColor="transparent"
+        barStyle="dark-content"
+      />
+      <Navigator />
+    </Fragment>
+  );
+};
 export default App;

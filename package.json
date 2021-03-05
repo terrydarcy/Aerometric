@@ -11,10 +11,11 @@
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.10",
-    "@react-navigation/drawer": "^5.11.4",
-    "@react-navigation/native": "^5.8.9",
-    "@react-navigation/stack": "^5.12.6",
+    "@react-navigation/bottom-tabs": "^5.11.7",
+    "@react-navigation/native": "^5.9.2",
+    "@react-navigation/stack": "^5.14.2",
     "assert": "^2.0.0",
+    "axios": "^0.21.1",
     "fs": "0.0.1-security",
     "git": "^0.1.5",
     "react": "16.13.1",
@@ -25,11 +26,10 @@
     "react-native-safe-area-context": "^3.1.9",
     "react-native-safe-area-view": "^1.1.1",
     "react-native-screens": "^2.14.0",
+    "react-native-splash-screen": "^3.2.0",
     "react-native-typography": "^1.4.1",
     "react-native-vector-icons": "^7.1.0",
-    "react-navigation": "^4.4.3",
-    "react-navigation-drawer": "^2.6.0",
-    "react-navigation-stack": "^2.10.1"
+    "react-navigation": "^4.4.3"
   },
   "devDependencies": {
     "@babel/core": "7.12.3",
