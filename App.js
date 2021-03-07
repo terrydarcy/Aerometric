@@ -2,10 +2,9 @@ import React, {Fragment, useEffect} from 'react';
 import Navigator from './Navigator';
 import SplashScreen from 'react-native-splash-screen';
 import {StatusBar} from 'react-native';
+
 const App = () => {
-  useEffect(() => {
-    SplashScreen.hide();
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <Fragment>

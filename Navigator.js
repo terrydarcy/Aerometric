@@ -2,10 +2,12 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import FlightTabNavigation from './navigators/FlightTabNavigation';
 import CovidTracker from './screens/CovidTracker';
+import MapTab from './screens/MapTab';
 import Profile from './screens/Profile';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {ImageBackground, StyleSheet, Dimensions, View} from 'react-native';
+import {ImageBackground, StyleSheet, View} from 'react-native';
+
 const image = {uri: 'https://reactjs.org/logo-og.png'};
 
 const Tab = createBottomTabNavigator();
@@ -19,8 +21,10 @@ const Navigator = () => {
             screenOptions={({route}) => ({
               tabBarIcon: ({focused, color, size}) => {
                 let iconName;
-                if (route.name === 'CovidTracker') {
+                if (route.name === 'MapTab') {
                   iconName = focused ? 'earth' : 'earth-outline';
+                } else if (route.name === 'CovidTracker') {
+                  iconName = focused ? 'fitness' : 'fitness-outline';
                 } else if (route.name === 'Flights') {
                   iconName = focused ? 'airplane' : 'airplane-outline';
                 } else if (route.name === 'Profile') {
@@ -41,8 +45,9 @@ const Navigator = () => {
               transparentCard: true,
             }}
             style={{backgroundColor: 'transparent'}}>
-            <Tab.Screen name="CovidTracker" component={CovidTracker} />
+            <Tab.Screen name="MapTab" component={MapTab} />
             <Tab.Screen name="Flights" component={FlightTabNavigation} />
+            <Tab.Screen name="CovidTracker" component={CovidTracker} />
             <Tab.Screen name="Profile" component={Profile} />
           </Tab.Navigator>
         </NavigationContainer>
@@ -50,6 +55,7 @@ const Navigator = () => {
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
