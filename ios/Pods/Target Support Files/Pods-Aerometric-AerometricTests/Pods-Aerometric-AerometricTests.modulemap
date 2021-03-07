@@ -1,0 +1,6 @@
+module Pods_Aerometric_AerometricTests {
+  umbrella header "Pods-Aerometric-AerometricTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
