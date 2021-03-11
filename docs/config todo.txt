@@ -1,0 +1,5 @@
+android:
+
+ios:
+
+config splashscreen and maps

@@ -4,7 +4,9 @@ import SplashScreen from 'react-native-splash-screen';
 import {StatusBar} from 'react-native';
 
 const App = () => {
-  useEffect(() => {}, []);
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
 
   return (
     <Fragment>
