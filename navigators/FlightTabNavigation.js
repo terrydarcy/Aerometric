@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import FlightTab from '../screens/FlightTab';
 import Flight from '../screens/Flight';

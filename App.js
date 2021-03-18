@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import Navigator from './Navigator';
 import SplashScreen from 'react-native-splash-screen';
 import {StatusBar} from 'react-native';
