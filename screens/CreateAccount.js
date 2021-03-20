@@ -11,42 +11,79 @@ import {
 import splashIcon from '../res/splash_icon.png';
 import {useNavigation} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
+import {generateUserDocument} from '../config/fire';
 
 const CreateAccount = () => {
-  const [username, setUsername] = React.useState('');
+  const [displayName, setDisplayName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState();
   const navigation = useNavigation();
 
   const createAccountEmailAndPassword = async () => {
-    if (username.length > 2) {
+    if (displayName.length > 2) {
       if (email.length > 2) {
         if (password.length >= 6) {
-          await auth()
-            .createUserWithEmailAndPassword(email, password)
-            .then(() => {
-              setUsername('');
+          const seed = Math.floor(Math.random() * Math.floor(5000));
+          const photoURL = 'https://picsum.photos/seed/' + seed + '/200';
+          try {
+            console.log(email, password);
+            const {user} = await auth().createUserWithEmailAndPassword(
+              email,
+              password,
+            );
+            generateUserDocument(user, {displayName, photoURL});
+          } catch (err) {
+            setError(err);
+            if (err.code === 'auth/email-already-in-use') {
+              setError('That email address is already in use!');
+              console.log('That email address is already in use!');
+            }
+            if (err.code === 'auth/invalid-email') {
+              setError('That email address is invalid!');
+              console.log('That email address is invalid!');
+            }
+            if (err.code === 'auth/invalid-email') {
+              setError('That email address is invalid!');
+              console.log('That email address is invalid!');
+            }
+            console.error(err);
+          }
+          auth().onAuthStateChanged(function (user) {
+            if (user) {
               setEmail('');
               setPassword('');
+              setDisplayName('');
               setError('');
               navigation.navigate('App');
-            })
-            .catch((error) => {
-              if (error.code === 'auth/email-already-in-use') {
-                setError('That email address is already in use!');
-                console.log('That email address is already in use!');
-              }
-              if (error.code === 'auth/invalid-email') {
-                setError('That email address is invalid!');
-                console.log('That email address is invalid!');
-              }
-              if (error.code === 'auth/invalid-email') {
-                setError('That email address is invalid!');
-                console.log('That email address is invalid!');
-              }
-              console.error(error);
-            });
+            } else {
+              // No user is signed in.
+            }
+          });
+
+          // .then(() => {
+          //   setUsername('');
+          //   setEmail('');
+          //   setPassword('');
+          //   setError('');
+          //   navigation.navigate('App');
+          //   generateUserDocument(user, {displayName, photoURL});
+          // })
+          // .catch((error) => {
+          //   if (error.code === 'auth/email-already-in-use') {
+          //     setError('That email address is already in use!');
+          //     console.log('That email address is already in use!');
+          //   }
+          //   if (error.code === 'auth/invalid-email') {
+          //     setError('That email address is invalid!');
+          //     console.log('That email address is invalid!');
+          //   }
+          //   if (error.code === 'auth/invalid-email') {
+          //     setError('That email address is invalid!');
+          //     console.log('That email address is invalid!');
+          //   }
+          //   console.error(error);
+          // });
         } else {
           setError('Password must be at least 6 characters');
         }
@@ -76,9 +113,9 @@ const CreateAccount = () => {
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
-            onChangeText={setUsername}
+            onChangeText={setDisplayName}
             placeholder={'Username'}
-            value={username}
+            value={displayName}
           />
         </View>
         <View style={styles.inputContainer}>

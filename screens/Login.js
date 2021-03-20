@@ -69,6 +69,7 @@ const Login = () => {
             style={styles.input}
             onChangeText={setPassword}
             placeholder={'Password'}
+            secureTextEntry={true}
             value={password}
           />
         </View>
