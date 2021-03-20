@@ -9,7 +9,7 @@ import {
   SafeAreaView,
   Dimensions,
 } from 'react-native';
-import SearchBox from '../components/SearchBox';
+import SearchFlight from '../components/SearchFlight';
 
 const mainColor = '#070707';
 
@@ -60,7 +60,7 @@ const FlightTab = ({navigation}) => {
         <Text style={styles.body}>Search for a flight below</Text>
       </View>
       <View style={{marginTop: 30}}>
-        <SearchBox navigation={navigation} />
+        <SearchFlight navigation={navigation} />
       </View>
       <SafeAreaView style={styles.container}>
         <FlatList

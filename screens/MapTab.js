@@ -21,7 +21,9 @@ const MapTab = ({currentLatitude, currentLongitude}) => {
     longitudeDelta: 1,
   };
   useEffect(() => {
+    console.log('coords recieved: ', currentLatitude, currentLongitude);
     setRegion(initRegion);
+    console.log(initRegion);
   }, []);
 
   const setRegion = async (e) => {
@@ -116,7 +118,6 @@ const MapTab = ({currentLatitude, currentLongitude}) => {
             </Callout>
           </Marker>
         ))}
-        {console.log(currentLatitude)}
         <Marker
           coordinate={{
             latitude: parseFloat(currentLatitude),

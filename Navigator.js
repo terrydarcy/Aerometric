@@ -90,6 +90,8 @@ const Navigator = () => {
         //getting the Latitude from the location json
         const currentLatitude = JSON.stringify(position.coords.latitude);
 
+        console.log('testlat', currentLatitude);
+        console.log('testLong', currentLongitude);
         //Setting Longitude state
         setCurrentLongitude(currentLongitude);
 
@@ -109,36 +111,36 @@ const Navigator = () => {
 
   return (
     <View style={styles.container}>
+      {/* <StatusBar translucent backgroundColor="transparent" /> */}
       <ImageBackground source={image} style={styles.image}>
-        <NavigationContainer style={{backgroundColor: 'transparent'}}>
-          <Tab.Navigator
-            screenOptions={({route}) => ({
-              tabBarIcon: ({focused, color, size}) => {
-                let iconName;
-                if (route.name === 'Map') {
-                  iconName = focused ? 'earth' : 'earth-outline';
-                } else if (route.name === 'Covid Check') {
-                  iconName = focused ? 'fitness' : 'fitness-outline';
-                } else if (route.name === 'Flights') {
-                  iconName = focused ? 'airplane' : 'airplane-outline';
-                } else if (route.name === 'Profile') {
-                  iconName = focused
-                    ? 'person-circle'
-                    : 'person-circle-outline';
-                }
+        <Tab.Navigator
+          screenOptions={({route}) => ({
+            tabBarIcon: ({focused, color, size}) => {
+              let iconName;
+              if (route.name === 'Map') {
+                iconName = focused ? 'earth' : 'earth-outline';
+              } else if (route.name === 'Covid Check') {
+                iconName = focused ? 'fitness' : 'fitness-outline';
+              } else if (route.name === 'Flights') {
+                iconName = focused ? 'airplane' : 'airplane-outline';
+              } else if (route.name === 'Profile') {
+                iconName = focused ? 'person-circle' : 'person-circle-outline';
+              }
 
-                // You can return any component that you like here!
-                return <Ionicons name={iconName} size={size} color={color} />;
-              },
-              transparentCard: true,
-            })}
-            tabBarOptions={{
-              activeTintColor: '#2D5EC6',
-              inactiveTintColor: 'gray',
-              keyboardHidesTabBar: true,
-              transparentCard: true,
-            }}
-            style={{backgroundColor: 'transparent'}}>
+              // You can return any component that you like here!
+              return <Ionicons name={iconName} size={size} color={color} />;
+            },
+            transparentCard: true,
+          })}
+          tabBarOptions={{
+            activeTintColor: '#2D5EC6',
+            inactiveTintColor: 'gray',
+            keyboardHidesTabBar: true,
+            transparentCard: true,
+          }}
+          style={{backgroundColor: 'transparent'}}>
+          {/* removed location as it was buggy */}
+          {/* {console.log(locationStatus)}
             {locationStatus === 'You are Here' ? (
               <Tab.Screen
                 name="Map"
@@ -154,18 +156,26 @@ const Navigator = () => {
                 name="Map"
                 children={() => (
                   <MapTab
-                    currentLatitude={'7.6921'}
-                    currentLongitude={'53.1424'}
+                    currentLatitude={'53.343027199999995'}
+                    currentLongitude={'-6.3373311999999995'}
                   />
                 )}
               />
-            )}
+            )} */}
 
-            <Tab.Screen name="Flights" component={FlightTabNavigation} />
-            <Tab.Screen name="Covid Check" component={CovidTracker} />
-            <Tab.Screen name="Profile" component={Profile} />
-          </Tab.Navigator>
-        </NavigationContainer>
+          <Tab.Screen
+            name="Map"
+            children={() => (
+              <MapTab
+                currentLatitude={'53.34729144059421'}
+                currentLongitude={'-6.259117126464845'}
+              />
+            )}
+          />
+          <Tab.Screen name="Flights" component={FlightTabNavigation} />
+          <Tab.Screen name="Covid Check" component={CovidTracker} />
+          <Tab.Screen name="Profile" component={Profile} />
+        </Tab.Navigator>
       </ImageBackground>
     </View>
   );

@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, TextInput} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 const mainColor = '#070707';
 
-function SearchBox({navigation}) {
+function SearchFlight({navigation}) {
   const [textVal, setText] = useState('');
   const [apiReturn, setApiReturn] = useState();
   const [error, setError] = useState('');
@@ -89,4 +89,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SearchBox;
+export default SearchFlight;
