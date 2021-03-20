@@ -14,9 +14,9 @@ const image = {uri: 'https://reactjs.org/logo-og.png'};
 const Tab = createBottomTabNavigator();
 
 const Navigator = () => {
-  const [currentLongitude, setCurrentLongitude] = useState();
-  const [currentLatitude, setCurrentLatitude] = useState();
-  const [locationStatus, setLocationStatus] = useState();
+  const [currentLongitude, setCurrentLongitude] = useState('');
+  const [currentLatitude, setCurrentLatitude] = useState('');
+  const [locationStatus, setLocationStatus] = useState('');
 
   useEffect(() => {
     const requestLocationPermission = async () => {
@@ -55,8 +55,6 @@ const Navigator = () => {
     Geolocation.getCurrentPosition(
       //Will give you the current location
       (position) => {
-        setLocationStatus('You are Here');
-
         //getting the Longitude from the location json
         const currentLongitude = JSON.stringify(position.coords.longitude);
 
@@ -69,6 +67,7 @@ const Navigator = () => {
 
         //Setting Longitude state
         setCurrentLatitude(currentLatitude);
+        setLocationStatus('You are Here');
       },
       (error) => {
         setLocationStatus(error.message);
@@ -116,9 +115,9 @@ const Navigator = () => {
             screenOptions={({route}) => ({
               tabBarIcon: ({focused, color, size}) => {
                 let iconName;
-                if (route.name === 'MapTab') {
+                if (route.name === 'Map') {
                   iconName = focused ? 'earth' : 'earth-outline';
-                } else if (route.name === 'CovidTracker') {
+                } else if (route.name === 'Covid Check') {
                   iconName = focused ? 'fitness' : 'fitness-outline';
                 } else if (route.name === 'Flights') {
                   iconName = focused ? 'airplane' : 'airplane-outline';
@@ -134,16 +133,15 @@ const Navigator = () => {
               transparentCard: true,
             })}
             tabBarOptions={{
-              activeTintColor: '#2B59C3',
+              activeTintColor: '#2D5EC6',
               inactiveTintColor: 'gray',
               keyboardHidesTabBar: true,
               transparentCard: true,
             }}
             style={{backgroundColor: 'transparent'}}>
-            {console.log(locationStatus)}
             {locationStatus === 'You are Here' ? (
               <Tab.Screen
-                name="MapTab"
+                name="Map"
                 children={() => (
                   <MapTab
                     currentLatitude={currentLatitude}
@@ -153,7 +151,7 @@ const Navigator = () => {
               />
             ) : (
               <Tab.Screen
-                name="MapTab"
+                name="Map"
                 children={() => (
                   <MapTab
                     currentLatitude={'7.6921'}
@@ -164,7 +162,7 @@ const Navigator = () => {
             )}
 
             <Tab.Screen name="Flights" component={FlightTabNavigation} />
-            <Tab.Screen name="CovidTracker" component={CovidTracker} />
+            <Tab.Screen name="Covid Check" component={CovidTracker} />
             <Tab.Screen name="Profile" component={Profile} />
           </Tab.Navigator>
         </NavigationContainer>

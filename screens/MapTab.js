@@ -1,12 +1,18 @@
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, FlatList} from 'react-native';
+import {View, StyleSheet, Text, Button} from 'react-native';
 import axios from 'axios';
-import MapView, {PROVIDER_GOOGLE, Marker, Polygon} from 'react-native-maps';
+import MapView, {
+  PROVIDER_GOOGLE,
+  Marker,
+  Polygon,
+  Callout,
+} from 'react-native-maps';
 
 const MapTab = ({currentLatitude, currentLongitude}) => {
-  const [planesInBound, setPlanesInBound] = useState([0]);
-  const [scanRegion, setScanRegion] = useState({});
+  const [planesInBound, setPlanesInBound] = useState([]);
+  const [scanRegion, setScanRegion] = useState();
   var searchReturned = false;
+  var viewingTooltip = false;
 
   var initRegion = {
     latitude: parseFloat(currentLatitude),
@@ -15,70 +21,18 @@ const MapTab = ({currentLatitude, currentLongitude}) => {
     longitudeDelta: 1,
   };
   useEffect(() => {
-    var scanRegionL = {
-      latitudeMinBound: initRegion.latitude - initRegion.latitudeDelta / 2,
-      latitudeMaxBound: initRegion.latitude + initRegion.latitudeDelta / 2,
-      longitudeMinBound: initRegion.longitude - initRegion.longitudeDelta / 2,
-      longitudeMaxBound: initRegion.longitude + initRegion.longitudeDelta / 2,
-    };
-
-    setScanRegion(scanRegionL);
+    setRegion(initRegion);
   }, []);
 
-  // useEffect(() => {
-  //   const planeBoundCheck = async () => {
-  //     await axios
-  //       .get(
-  //         'https://opensky-network.org/api/states/all?lamin=' +
-  //           initRegion.latitude +
-  //           '&lomin=' +
-  //           initRegion.longitude +
-  //           '&lamax=' +
-  //           (initRegion.latitude + initRegion.latitudeDelta) +
-  //           '&lomax=' +
-  //           (initRegion.longitude + initRegion.longitudeDelta),
-  //       )
-  //       .then(function (response) {
-  //         console.log('init: ', response.data);
-  //         if (response.data.states != null) {
-  //           setPlanesInBound(response.data);
-  //         }
-  //       })
-  //       .catch(function (error) {
-  //         console.log(
-  //           'Axios erros: MapTab.js',
-  //           error,
-  //           currentLatitude,
-  //           currentLatitude + 1,
-  //           currentLongitude,
-  //           currentLongitude + 1,
-  //         );
-  //       })
-  //       .then(function () {
-  //         searchReturned = true;
-  //       });
-  //   };
-
-  //   console.log(
-  //     initRegion.latitude,
-  //     initRegion.longitude,
-  //     initRegion.latitude + initRegion.latitudeDelta,
-  //     initRegion.longitude + initRegion.longitudeDelta,
-  //   );
-  //   planeBoundCheck();
-  // }, []);
-
-  const setRegion = (e) => {
+  const setRegion = async (e) => {
     var scanRegionL = {
       latitudeMinBound: e.latitude - e.latitudeDelta / 2,
       latitudeMaxBound: e.latitude + e.latitudeDelta / 2,
       longitudeMinBound: e.longitude - e.longitudeDelta / 2,
       longitudeMaxBound: e.longitude + e.longitudeDelta / 2,
     };
-
     setScanRegion(scanRegionL);
-
-    axios
+    await axios
       .get(
         'https://opensky-network.org/api/states/all?lamin=' +
           scanRegionL.latitudeMinBound +
@@ -92,7 +46,6 @@ const MapTab = ({currentLatitude, currentLongitude}) => {
       .then(function (response) {
         if (response.data.states != null) {
           setPlanesInBound(response.data.states);
-          console.log(response.data.states);
         } else {
           console.log('No planes found');
         }
@@ -108,45 +61,62 @@ const MapTab = ({currentLatitude, currentLongitude}) => {
         );
       });
   };
-
-  const renderItem = ({plane}) => (
-    <View>
-      {console.log(plane)}
-      <Marker coordinate={{latitude: 3, longitude: 3}}></Marker>
-    </View>
-  );
-
   return (
     <View style={styles.container}>
       <MapView
         provider={PROVIDER_GOOGLE}
         style={styles.map}
         initialRegion={initRegion}
-        onRegionChangeComplete={(e) => setRegion(e)}>
-        <Polygon
-          coordinates={[
-            {
-              // BL
-              latitude: scanRegion.latitudeMinBound,
-              longitude: scanRegion.longitudeMinBound,
-            },
-            {
-              //TL
-              latitude: scanRegion.latitudeMaxBound,
-              longitude: scanRegion.longitudeMinBound,
-            },
-            {
-              //TR
-              latitude: scanRegion.latitudeMaxBound,
-              longitude: scanRegion.longitudeMaxBound,
-            },
-            {
-              //BL
-              latitude: scanRegion.latitudeMinBound,
-              longitude: scanRegion.longitudeMaxBound,
-            },
-          ]}
-        />
+        onRegionChangeComplete={(e) => setRegion(e)}
+        showsMyLocationButton={true}
+        showsCompass={true}
+        mapPadding={{top: 30, right: 0, bottom: 0, left: 0}}>
+        {/* {scanRegion && (
+          <Polygon
+            coordinates={[
+              {
+                // BL
+                latitude: scanRegion.latitudeMinBound,
+                longitude: scanRegion.longitudeMinBound,
+              },
+              {
+                //TL
+                latitude: scanRegion.latitudeMaxBound,
+                longitude: scanRegion.longitudeMinBound,
+              },
+              {
+                //TR
+                latitude: scanRegion.latitudeMaxBound,
+                longitude: scanRegion.longitudeMaxBound,
+              },
+              {
+                //BL
+                latitude: scanRegion.latitudeMinBound,
+                longitude: scanRegion.longitudeMaxBound,
+              },
+            ]}
+          />
+        )} */}
+        {planesInBound.map((plane, key) => (
+          <Marker
+            key={plane[0]}
+            coordinate={{
+              latitude: plane[6],
+              longitude: plane[5],
+            }}
+            image={require('../res/map_plane.png')}>
+            <Callout>
+              <Text style={{fontSize: 20}}>{plane[1]} </Text>
+              <Text>Velocity: {plane[9]} m/s</Text>
+              <Text>Landed: {plane[8] != null && plane[8].toString()}</Text>
+              <Text>Altitude: {plane[13]}m</Text>
+              <Text>Vertical rate: {plane[11]} m/s</Text>
+              <Text>ICAO24: {plane[0]}</Text>
+              <Button title={'go to flight'} />
+            </Callout>
+          </Marker>
+        ))}
+        {console.log(currentLatitude)}
         <Marker
           coordinate={{
             latitude: parseFloat(currentLatitude),
