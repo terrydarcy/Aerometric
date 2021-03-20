@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import splashIcon from '../res/splash_icon.png';
 import {useNavigation} from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
 
 const CreateAccount = () => {
   const [username, setUsername] = React.useState('');
@@ -17,6 +18,45 @@ const CreateAccount = () => {
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState();
   const navigation = useNavigation();
+
+  const createAccountEmailAndPassword = async () => {
+    if (username.length > 2) {
+      if (email.length > 2) {
+        if (password.length >= 6) {
+          await auth()
+            .createUserWithEmailAndPassword(email, password)
+            .then(() => {
+              setUsername('');
+              setEmail('');
+              setPassword('');
+              setError('');
+              navigation.navigate('App');
+            })
+            .catch((error) => {
+              if (error.code === 'auth/email-already-in-use') {
+                setError('That email address is already in use!');
+                console.log('That email address is already in use!');
+              }
+              if (error.code === 'auth/invalid-email') {
+                setError('That email address is invalid!');
+                console.log('That email address is invalid!');
+              }
+              if (error.code === 'auth/invalid-email') {
+                setError('That email address is invalid!');
+                console.log('That email address is invalid!');
+              }
+              console.error(error);
+            });
+        } else {
+          setError('Password must be at least 6 characters');
+        }
+      } else {
+        setError('Email too short!');
+      }
+    } else {
+      setError('Username too short!');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -29,6 +69,7 @@ const CreateAccount = () => {
           flex: 3,
           alignItems: 'center',
           justifyContent: 'flex-start',
+          marginTop: 20,
         }}>
         <Text style={styles.subtitle}> Create Account</Text>
 
@@ -51,6 +92,7 @@ const CreateAccount = () => {
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
+            secureTextEntry={true}
             onChangeText={setPassword}
             placeholder={'Password'}
             value={password}
@@ -62,7 +104,7 @@ const CreateAccount = () => {
             style={styles.loginButton}
             underlayColor="#3ac63d"
             activeOpacity={0.6}
-            onPress={() => Alert.alert('Simple Button pressed')}>
+            onPress={() => createAccountEmailAndPassword()}>
             <Text style={styles.text}>Create Account</Text>
           </TouchableHighlight>
         </View>
@@ -72,7 +114,7 @@ const CreateAccount = () => {
             style={styles.createAccountButton}
             underlayColor="#ffd463"
             activeOpacity={0.6}
-            onPress={() => navigation.navigate('login')}>
+            onPress={() => navigation.navigate('Login')}>
             <Text style={styles.text}>Login to existing account</Text>
           </TouchableHighlight>
         </View>

@@ -10,12 +10,36 @@ import {
 } from 'react-native';
 import splashIcon from '../res/splash_icon.png';
 import {useNavigation} from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
 
 const Login = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const navigation = useNavigation();
   const [error, setError] = React.useState();
+
+  const signInWithEmailPassword = async () => {
+    if (email.length > 2) {
+      if (password.length >= 6) {
+        await auth()
+          .signInWithEmailAndPassword(email, password)
+          .then(() => {
+            setEmail('');
+            setPassword('');
+            setError('');
+            navigation.navigate('App');
+          })
+          .catch((error) => {
+            setError(error);
+            console.error(error);
+          });
+      } else {
+        setError('Password must be at least 6 characters');
+      }
+    } else {
+      setError('Email too short!');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -28,6 +52,7 @@ const Login = () => {
           flex: 3,
           alignItems: 'center',
           justifyContent: 'flex-start',
+          marginTop: 20,
         }}>
         <Text style={styles.subtitle}> Login</Text>
 
@@ -54,7 +79,7 @@ const Login = () => {
             style={styles.loginButton}
             underlayColor="#3ac63d"
             activeOpacity={0.6}
-            onPress={() => Alert.alert('Simple Button pressed')}>
+            onPress={() => signInWithEmailPassword()}>
             <Text style={styles.text}>Login</Text>
           </TouchableHighlight>
         </View>
