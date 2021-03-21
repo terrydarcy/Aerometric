@@ -3,77 +3,26 @@ import {
   View,
   StyleSheet,
   Image,
-  StatusBar,
   ScrollView,
-  RefreshControl,
   Dimensions,
   TouchableHighlight,
+  Text,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import axios from 'axios';
-import FlightDetails from '../components/FlightDetails';
-
-const wait = (timeout) => {
-  return new Promise((resolve) => {
-    setTimeout(resolve, timeout);
-  });
-};
+import MapComponent from '../components/MapComponent';
 
 const Flight = ({navigation, route}) => {
-  const [apiReturn, setApiReturn] = useState();
-  const [searchFound, setSearchFound] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
+  const [delay, setDelay] = useState();
 
   useEffect(() => {
-    var flightCode = route.params.flightCode;
-    axios
-      .get('https://opensky-network.org/api/states/all?icao24=' + flightCode)
-      .then(function (response) {
-        if (response.data.states && response.data.states.length > 0) {
-          var apiData = {
-            flightCode: flightCode,
-            latitude: response.data.states[0][6],
-            longitude: response.data.states[0][5],
-            altitude: response.data.states[0][13],
-          };
-          setApiReturn(apiData);
-        }
-        console.log('axios: ', response.data);
-      })
-      .catch(function (error) {
-        console.log('Axios erros: Flight.js', error);
-      })
-      .finally(function () {
-        setSearchFound(true);
-      });
+    // console.log(
+    //   'test: ',
+    //   route.params.flight['flight'].arr_estimated.indexOf() -
+    //     route.params.flight['flight'].arr_scheduled,
+    // );
+    //if(route.params.flight["flight"].arr_estimated)
+    //setDelay()
   }, []);
-
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-
-    var flightCode = route.params.flightCode;
-    axios
-      .get('https://opensky-network.org/api/states/all?icao24=' + flightCode)
-      .then(function (response) {
-        if (response.data.states && response.data.states.length > 0) {
-          var apiData = {
-            flightCode: flightCode,
-            latitude: response.data.states[0][6],
-            longitude: response.data.states[0][5],
-            altitude: response.data.states[0][13],
-          };
-          setApiReturn(apiData);
-          console.log('axios: ', response.data);
-        }
-      })
-      .catch(function (error) {
-        console.log('Axios erros: Flight.js', error);
-      })
-      .finally(function () {
-        setSearchFound(true);
-        setRefreshing(false);
-      });
-  }, [apiReturn]);
 
   return (
     <View style={styles.container}>
@@ -81,21 +30,73 @@ const Flight = ({navigation, route}) => {
 
       <View
         style={{
-          marginTop: 60,
+          flexDirection: 'row',
+          marginTop: 50,
           marginHorizontal: 20,
+          alignItems: 'center',
         }}>
         <TouchableHighlight
           style={styles.back}
           onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" color="black" size={30} />
         </TouchableHighlight>
+        <View
+          style={{
+            flex: 5,
+            marginRight: 40,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text style={styles.title}>
+            Flight {route.params.flight['flight'].iata}
+          </Text>
+        </View>
       </View>
-      <ScrollView
-        contentContainerStyle={styles.scrollView}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }>
-        {searchFound && apiReturn && <FlightDetails apiReturn={apiReturn} />}
+
+      <ScrollView contentContainerStyle={styles.scrollView}>
+        <View style={styles.mapInfo}>
+          <View style={styles.mapContainer}>
+            <MapComponent
+              latitude={route.params.flight['flight'].latitude}
+              longitude={route.params.flight['flight'].longitude}
+              rot={route.params.flight['flight'].heading}
+              arrivalAirport={route.params.flight['arr_airport']}
+              departureAirport={route.params.flight['dep_airport']}
+            />
+          </View>
+          <View style={styles.flightInfo}>
+            <View style={styles.flightInfoArrivalDeparture}>
+              <View
+                style={{
+                  flex: 1,
+                  backgroundColor: '#EBEDEE',
+                  padding: 10,
+                  marginRight: 5,
+                  borderRadius: 15,
+                }}>
+                <Text>
+                  {route.params.flight['dep_airport'].city}
+                  {'\n'}
+                  Departed {route.params.flight['flight'].dep_actual}
+                </Text>
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  backgroundColor: '#EBEDEE',
+                  padding: 10,
+                  borderRadius: 15,
+                }}>
+                <Text>
+                  {route.params.flight['arr_airport'].city}
+                  {'\n'}
+                  Estimated arrival{' '}
+                  {route.params.flight['flight'].arr_estimated}
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
       </ScrollView>
     </View>
   );
@@ -124,6 +125,48 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     height: '100%',
+    width: '100%',
+    marginTop: 15,
+    alignItems: 'center',
+  },
+  mapInfo: {
+    width: '90%',
+    height: 500,
+
+    borderRadius: 15,
+    backgroundColor: 'white',
+    overflow: 'hidden',
+    borderColor: 'white',
+  },
+  mapContainer: {
+    width: '100%',
+    borderRadius: 15,
+    borderWidth: 5,
+    borderColor: 'white',
+    overflow: 'hidden',
+
+    flex: 1,
+    height: 200,
+  },
+  flightInfo: {
+    flex: 1,
+    height: 250,
+    borderRadius: 15,
+    backgroundColor: 'white',
+    borderWidth: 5,
+    flexDirection: 'column',
+    borderColor: 'white',
+  },
+  title: {
+    marginLeft: 15,
+    marginVertical: 0,
+    padding: 0,
+    textAlign: 'center',
+    fontSize: 35,
+    color: 'white',
+  },
+  flightInfoArrivalDeparture: {
+    flexDirection: 'row',
   },
 });
 

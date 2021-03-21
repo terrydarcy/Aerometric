@@ -2,61 +2,43 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, TextInput} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 const mainColor = '#070707';
+import axios from 'axios';
+import {set} from 'react-native-reanimated';
 
 function SearchFlight({navigation}) {
   const [textVal, setText] = useState('');
   const [apiReturn, setApiReturn] = useState();
   const [error, setError] = useState('');
 
-  var clientID = 'O3BjrcxyQ0LC2hAj8ibJT0sIKmDqq6JC';
-  var clientSecret = 'Ke6UlHPUs3i8yAhF';
-
-  // useEffect(() => {
-  //   axios('https://test.api.amadeus.com/v1/security/oauth2/token', {
-  //     headers: {
-  //       'Content-Type': 'application/x-www-form-urlencoded',
-  //       Authorization: 'Basic ' + btoa(clientID + ':' + clientSecret),
-  //     },
-  //     data: 'grant_type=client_credentials',
-  //     method: 'POST',
-  //   })
-  //     .then((tokenResponse) => {
-  //       axios(`test.api.amadeus.com/v2/schedule/flights`, {
-  //         method: 'GET',
-  //         headers: {
-  //           Authorization: 'Bearer ' + tokenResponse.data.access_token,
-  //         },
-  //       })
-  //         .then((tracksResponse) => {
-  //           if (tracksResponse.data.tracks.items.length > 0) {
-  //             var songName = tracksResponse.data.tracks.items[0].name;
-  //             var artistName =
-  //               tracksResponse.data.tracks.items[0].artists[0].name;
-  //             var id = tracksResponse.data.tracks.items[0].id;
-
-  //             dispatch(setSongName(songName));
-  //             dispatch(setArtistName(artistName));
-  //             dispatch(setSpotifyID(id));
-  //             saveSearch(songName, artistName);
-  //             searchSuccess = true;
-  //           } else {
-  //             searchSuccess = false;
-  //           }
-  //         })
-  //         .catch((error) => {
-  //           console.log('Spotify Search API call problem', error);
-  //         });
-  //     })
-  //     .catch((error) => {
-  //       console.log('Spotify access token problem', error);
-  //     });
-  // }, []);
-
   const navigateToFlight = (textVal) => {
-    if (textVal && textVal.length > 0) {
-      navigation.navigate('flight', {
-        flightCode: textVal.toLowerCase(),
-      });
+    if (textVal.length > 0) {
+      const options = {
+        method: 'GET',
+        url: 'https://flight-data4.p.rapidapi.com/get_flight_info',
+        params: {flight: textVal},
+        headers: {
+          'x-rapidapi-key':
+            '0fc20f00e0msh4755d4ab30ecc56p14128ejsn344e954e3f0c',
+          'x-rapidapi-host': 'flight-data4.p.rapidapi.com',
+        },
+      };
+
+      axios
+        .request(options)
+        .then(function (response) {
+          console.log(response.data);
+          if (response.data[textVal] != null) {
+            navigation.navigate('flight', {
+              flight: response.data[textVal],
+            });
+          } else {
+            setError('Flight was not found');
+          }
+        })
+        .catch(function (error) {
+          console.error(error);
+          setError('Flight was not found');
+        });
       setError('');
     } else {
       setError('Please enter a flight code to start searching');
@@ -84,7 +66,7 @@ function SearchFlight({navigation}) {
             color: mainColor,
           }}
           onChangeText={(text) => setText({text})}
-          placeholder="Enter ICAO24 code"
+          placeholder="Enter flight code"
           placeholderTextColor={mainColor}
           onSubmitEditing={() => navigateToFlight(textVal.text)}
         />
