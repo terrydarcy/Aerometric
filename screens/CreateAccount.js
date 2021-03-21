@@ -27,7 +27,6 @@ const CreateAccount = () => {
           const seed = Math.floor(Math.random() * Math.floor(5000));
           const photoURL = 'https://picsum.photos/seed/' + seed + '/200';
           try {
-            console.log(email, password);
             const {user} = await auth().createUserWithEmailAndPassword(
               email,
               password,

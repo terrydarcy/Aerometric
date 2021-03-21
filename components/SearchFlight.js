@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, TextInput} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 const mainColor = '#070707';
@@ -8,32 +8,49 @@ function SearchFlight({navigation}) {
   const [apiReturn, setApiReturn] = useState();
   const [error, setError] = useState('');
 
-  // const OpenSkyApiCall = (flightCode) => {
-  //   if (flightCode != undefined) {
-  //     var lowerCaseCode = flightCode.toLowerCase();
-  //     return (
-  //       fetch(
-  //         'https://opensky-network.org/api/states/all?icao24=' + lowerCaseCode,
-  //       )
-  //         .then((response) => response.json())
-  //         //TODO: check result
-  //         .then((json) => {
-  //           console.log(json);
-  //           var apiData = {
-  //             flightCode: flightCode,
-  //             latitude: json.states[0][6],
-  //             longitude: json.states[0][5],
-  //             altitude: json.states[0][13],
-  //           };
-  //           setApiReturn(apiData);
-  //           console.log(apiReturn);
+  var clientID = 'O3BjrcxyQ0LC2hAj8ibJT0sIKmDqq6JC';
+  var clientSecret = 'Ke6UlHPUs3i8yAhF';
+
+  // useEffect(() => {
+  //   axios('https://test.api.amadeus.com/v1/security/oauth2/token', {
+  //     headers: {
+  //       'Content-Type': 'application/x-www-form-urlencoded',
+  //       Authorization: 'Basic ' + btoa(clientID + ':' + clientSecret),
+  //     },
+  //     data: 'grant_type=client_credentials',
+  //     method: 'POST',
+  //   })
+  //     .then((tokenResponse) => {
+  //       axios(`test.api.amadeus.com/v2/schedule/flights`, {
+  //         method: 'GET',
+  //         headers: {
+  //           Authorization: 'Bearer ' + tokenResponse.data.access_token,
+  //         },
+  //       })
+  //         .then((tracksResponse) => {
+  //           if (tracksResponse.data.tracks.items.length > 0) {
+  //             var songName = tracksResponse.data.tracks.items[0].name;
+  //             var artistName =
+  //               tracksResponse.data.tracks.items[0].artists[0].name;
+  //             var id = tracksResponse.data.tracks.items[0].id;
+
+  //             dispatch(setSongName(songName));
+  //             dispatch(setArtistName(artistName));
+  //             dispatch(setSpotifyID(id));
+  //             saveSearch(songName, artistName);
+  //             searchSuccess = true;
+  //           } else {
+  //             searchSuccess = false;
+  //           }
   //         })
   //         .catch((error) => {
-  //           console.error('ERROR: ' + error);
-  //         })
-  //     );
-  //   }
-  // };
+  //           console.log('Spotify Search API call problem', error);
+  //         });
+  //     })
+  //     .catch((error) => {
+  //       console.log('Spotify access token problem', error);
+  //     });
+  // }, []);
 
   const navigateToFlight = (textVal) => {
     if (textVal && textVal.length > 0) {

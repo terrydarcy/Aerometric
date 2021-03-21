@@ -47,7 +47,7 @@ const Onboarding = () => {
         </View>
         <View key="3">
           <Page
-            backgroundColor="#b81809"
+            backgroundColor="#"
             icon={'plane-departure'}
             title="Flight Tracker"
           />

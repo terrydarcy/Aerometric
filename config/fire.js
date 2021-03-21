@@ -9,7 +9,9 @@ export const generateUserDocument = async (user, additionalData) => {
 
   if (!snapshot.exists) {
     const {email, displayName, photoURL} = user;
+    displayName = capitalizeFirstLetter(displayName);
     //console.log("at document creation: ", displayName, photoURL);
+
     try {
       await userRef.set({
         email,
