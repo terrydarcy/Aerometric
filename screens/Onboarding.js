@@ -47,12 +47,12 @@ const Onboarding = () => {
         </View>
         <View key="3">
           <Page
-            backgroundColor="#"
+            backgroundColor="#cf0c3a"
             icon={'plane-departure'}
             title="Flight Tracker"
           />
           <Footer
-            backgroundColor="#c6463a"
+            backgroundColor="#d93d61"
             leftButtonLabel="Back"
             leftButtonPress={() => {
               handlePageChange(1);

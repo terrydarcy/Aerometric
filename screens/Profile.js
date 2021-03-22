@@ -5,6 +5,8 @@ import {capitalizeFirstLetter} from '../config/Util';
 import {useNavigation} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import firestore from '@react-native-firebase/firestore';
+import firebase from '@react-native-firebase/app';
 
 const Profile = ({}) => {
   const user = useContext(UserContext);
@@ -14,12 +16,23 @@ const Profile = ({}) => {
   const [displayName, setDisplayName] = useState('');
   const [photoURL, setPhotoURL] = useState('');
 
+  const [flightsSearched, setFlightsSearched] = useState();
+  const [flightsClicked, setFlightsClicked] = useState();
+
   useEffect(() => {
     if (user) {
       const {email, displayName, photoURL} = user;
       setEmail(capitalizeFirstLetter(email));
       setDisplayName(capitalizeFirstLetter(displayName));
       setPhotoURL(photoURL);
+      firestore()
+        .doc(`Users/${user.uid}`)
+        .onSnapshot((doc) => {
+          if (doc.data().flightsClicked)
+            setFlightsClicked(doc.data().flightsClicked);
+          if (doc.data().flightsSearched)
+            setFlightsSearched(doc.data().flightsSearched);
+        });
     }
   }, [user]);
 
@@ -65,7 +78,13 @@ const Profile = ({}) => {
             size={40}
             color="white"
           />
-          <Text style={styles.text}>82 Live Flights Tracked</Text>
+          {flightsClicked ? (
+            <Text style={styles.text}>
+              {flightsClicked} Live Flights Tracked
+            </Text>
+          ) : (
+            <Text style={styles.text}>0 Live Flights Tracked</Text>
+          )}
         </View>
         <View style={[styles.statContainer, styles.red]}>
           <Icon
@@ -74,7 +93,11 @@ const Profile = ({}) => {
             size={40}
             color="white"
           />
-          <Text style={styles.text}>200 Flights Searched</Text>
+          {flightsSearched ? (
+            <Text style={styles.text}>{flightsSearched} Flights Searched</Text>
+          ) : (
+            <Text style={styles.text}>0 Flights Searched</Text>
+          )}
         </View>
         <View style={[styles.statContainer, styles.green]}>
           <Icon
@@ -83,7 +106,7 @@ const Profile = ({}) => {
             size={40}
             color="white"
           />
-          <Text style={styles.text}>30 Covid-19 Checks</Text>
+          <Text style={styles.text}>0 Covid-19 Checks</Text>
         </View>
       </View>
       <Text style={styles.subTitle}>Account Settings</Text>

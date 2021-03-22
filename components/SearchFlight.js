@@ -1,21 +1,25 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {View, Text, StyleSheet, TextInput} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-const mainColor = '#070707';
 import axios from 'axios';
-import {set} from 'react-native-reanimated';
+import {UserContext} from '../providers/UserProvider';
+import firestore from '@react-native-firebase/firestore';
+import firebase from '@react-native-firebase/app';
+
+const mainColor = '#070707';
 
 function SearchFlight({navigation}) {
   const [textVal, setText] = useState('');
   const [apiReturn, setApiReturn] = useState();
   const [error, setError] = useState('');
+  const user = useContext(UserContext);
 
   const navigateToFlight = (textVal) => {
-    if (textVal.length > 0) {
+    if (textVal && textVal.length > 0) {
       const options = {
         method: 'GET',
         url: 'https://flight-data4.p.rapidapi.com/get_flight_info',
-        params: {flight: textVal},
+        params: {flight: textVal.toUpperCase()},
         headers: {
           'x-rapidapi-key':
             '0fc20f00e0msh4755d4ab30ecc56p14128ejsn344e954e3f0c',
@@ -27,10 +31,11 @@ function SearchFlight({navigation}) {
         .request(options)
         .then(function (response) {
           console.log(response.data);
-          if (response.data[textVal] != null) {
+          if (response.data[textVal.toUpperCase()] != null) {
             navigation.navigate('flight', {
-              flight: response.data[textVal],
+              flight: response.data[textVal.toUpperCase()],
             });
+            incrementFlightsSearched();
           } else {
             setError('Flight was not found');
           }
@@ -44,7 +49,18 @@ function SearchFlight({navigation}) {
       setError('Please enter a flight code to start searching');
     }
   };
+  const incrementFlightsSearched = () => {
+    const userRef = firestore().doc(`Users/${user.uid}`);
 
+    userRef
+      .update({
+        flightsSearched: firebase.firestore.FieldValue.increment(1),
+      })
+      .then(function () {})
+      .catch(function (error) {
+        console.error(error);
+      });
+  };
   return (
     <View>
       <View
@@ -55,7 +71,6 @@ function SearchFlight({navigation}) {
           alignItems: 'center',
           paddingVertical: 5,
           paddingHorizontal: 20,
-          margin: 20,
         }}>
         <Icon name="search" size={20} color={mainColor} />
         <TextInput
