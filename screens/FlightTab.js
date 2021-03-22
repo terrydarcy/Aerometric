@@ -40,6 +40,7 @@ const FlightTab = ({navigation}) => {
   let swipeable = null;
 
   const [flights, setFlights] = useState([]);
+  const [error, setError] = useState();
 
   useEffect(() => {
     firestore()
@@ -89,11 +90,13 @@ const FlightTab = ({navigation}) => {
         } else {
           removeFlightFromDB(flight);
           setError('Flight was not found');
+          closeError();
         }
       })
       .catch(function (error) {
         console.error(error);
         setError('Flight was not found');
+        closeError();
       });
   };
   const incrementFlightsSearched = () => {
@@ -108,11 +111,25 @@ const FlightTab = ({navigation}) => {
         console.error(error);
       });
   };
+
+  const closeError = () => {
+    setTimeout(
+      function () {
+        setError('');
+      }.bind(this),
+      3000,
+    );
+  };
   return (
     <View style={styles.container}>
+      <StatusBar
+        translucent
+        backgroundColor="transparent"
+        barStyle="dark-content"
+      />
       <View
         style={{
-          marginTop: 30,
+          marginTop: 10,
         }}>
         <Text style={styles.title}>Flights</Text>
         <Text style={styles.subTitle2}>Search for a flight below</Text>
@@ -120,7 +137,9 @@ const FlightTab = ({navigation}) => {
       <View style={{marginTop: 30, marginBottom: 10}}>
         <SearchFlight navigation={navigation} />
       </View>
+      <Text style={{textAlign: 'center', color: 'red'}}>{error}</Text>
       <Text style={styles.subTitle}>Saved Flights</Text>
+
       <FlatList
         contentContainerStyle={styles.flightsContainer}
         data={flights}

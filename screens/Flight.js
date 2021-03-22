@@ -15,6 +15,8 @@ import PlanePhoto from '../components/PlanePhoto';
 import {UserContext} from '../providers/UserProvider';
 import firestore from '@react-native-firebase/firestore';
 import firebase from '@react-native-firebase/app';
+import Weather from '../components/Weather';
+import Covid from '../components/Covid';
 
 const Flight = ({navigation, route}) => {
   const user = useContext(UserContext);
@@ -87,15 +89,16 @@ const Flight = ({navigation, route}) => {
 
   return (
     <View style={styles.container}>
-      <Image source={require('../res/flightbg.png')} style={styles.bg} />
+      {/* <Image source={require('../res/flightbg.png')} style={styles.bg} /> */}
 
       <View
         style={{
           flexDirection: 'row',
-          marginTop: 50,
-          marginBottom: 10,
-          marginHorizontal: 20,
+          paddingTop: 50,
+          paddingBottom: 10,
+          paddingHorizontal: 20,
           alignItems: 'center',
+          backgroundColor: '#2B59C3',
         }}>
         <TouchableOpacity
           activeOpacity={0.6}
@@ -141,13 +144,15 @@ const Flight = ({navigation, route}) => {
               departureAirport={route.params.flight['dep_airport']}
             />
           </View>
+
           <View style={styles.flightInfo}>
             <View style={styles.flightInfoArrivalDeparture}>
               <View
                 style={{
                   flex: 1,
                   backgroundColor: '#EBEDEE',
-                  padding: 10,
+                  paddingVertical: 5,
+                  paddingHorizontal: 10,
                   marginRight: 5,
                   borderRadius: 15,
                 }}>
@@ -164,7 +169,8 @@ const Flight = ({navigation, route}) => {
                 style={{
                   flex: 1,
                   backgroundColor: '#EBEDEE',
-                  padding: 10,
+                  paddingVertical: 5,
+                  paddingHorizontal: 10,
                   borderRadius: 15,
                 }}>
                 <Text style={styles.subTitle}>Arrival</Text>
@@ -184,7 +190,8 @@ const Flight = ({navigation, route}) => {
                 backgroundColor: '#EBEDEE',
                 marginTop: 5,
                 borderRadius: 15,
-                padding: 10,
+                paddingVertical: 5,
+                paddingHorizontal: 10,
               }}>
               <Text style={styles.text}>Flight Aerometrics</Text>
               <Text style={styles.text1}>
@@ -200,11 +207,38 @@ const Flight = ({navigation, route}) => {
                 Altitude {route.params.flight['flight'].altitude}ft
               </Text>
             </View>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: '#EBEDEE',
+                marginTop: 5,
+                borderRadius: 15,
+                paddingVertical: 5,
+                paddingHorizontal: 10,
+              }}>
+              <Text style={styles.text1}>
+                <Text style={styles.text}>From </Text>
+                {'\n'}
+                {route.params.flight['dep_airport'].name}
+                {'\n'}
+                <Text style={styles.text}>To </Text>
+                {'\n'}
+                {route.params.flight['arr_airport'].name}
+              </Text>
+            </View>
           </View>
         </View>
         <PlanePhoto
           aircraft={route.params.flight['aircraft']}
           airline={route.params.flight['airline']}
+        />
+        <Weather
+          latitude={route.params.flight['arr_airport'].latitude}
+          longitude={route.params.flight['arr_airport'].longitude}
+        />
+        <Covid
+          latitude={route.params.flight['arr_airport'].latitude}
+          longitude={route.params.flight['arr_airport'].longitude}
         />
       </ScrollView>
     </View>
@@ -254,11 +288,11 @@ const styles = StyleSheet.create({
   },
   mapInfo: {
     width: '90%',
-    height: 500,
     borderRadius: 15,
     backgroundColor: 'white',
     overflow: 'hidden',
     borderColor: 'white',
+    elevation: 7,
   },
 
   mapContainer: {
@@ -273,11 +307,11 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     width: '100%',
+    paddingTop: 15,
     alignItems: 'center',
   },
   flightInfo: {
     flex: 1,
-    height: 250,
     borderRadius: 15,
     backgroundColor: 'white',
     borderWidth: 5,

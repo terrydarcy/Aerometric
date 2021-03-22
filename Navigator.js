@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import FlightTabNavigation from './navigators/FlightTabNavigation';
 import CovidTracker from './screens/CovidTracker';
@@ -7,18 +7,26 @@ import Profile from './screens/Profile';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {ImageBackground, StyleSheet, View} from 'react-native';
-import {Text, PermissionsAndroid} from 'react-native';
+import {Image, PermissionsAndroid} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 const image = {uri: 'https://reactjs.org/logo-og.png'};
+import {UserContext} from './providers/UserProvider';
 
 const Tab = createBottomTabNavigator();
 
 const Navigator = () => {
+  const user = useContext(UserContext);
+
   const [currentLongitude, setCurrentLongitude] = useState('');
   const [currentLatitude, setCurrentLatitude] = useState('');
   const [locationStatus, setLocationStatus] = useState('');
+  const [photoURL, setPhotoURL] = useState('');
 
   useEffect(() => {
+    if (user) {
+      const {email, displayName, photoURL} = user;
+      setPhotoURL(photoURL);
+    }
     const requestLocationPermission = async () => {
       if (Platform.OS === 'ios') {
         getOneTimeLocation();
@@ -117,18 +125,40 @@ const Navigator = () => {
           screenOptions={({route}) => ({
             tabBarIcon: ({focused, color, size}) => {
               let iconName;
+              size = 35;
               if (route.name === 'Map') {
                 iconName = focused ? 'earth' : 'earth-outline';
+                return <Ionicons name={iconName} size={size} color={color} />;
               } else if (route.name === 'Covid Check') {
                 iconName = focused ? 'fitness' : 'fitness-outline';
+                return <Ionicons name={iconName} size={size} color={color} />;
               } else if (route.name === 'Flights') {
                 iconName = focused ? 'airplane' : 'airplane-outline';
+                return <Ionicons name={iconName} size={size} color={color} />;
               } else if (route.name === 'Profile') {
                 iconName = focused ? 'person-circle' : 'person-circle-outline';
+                if (user) {
+                  return (
+                    <View>
+                      {focused ? (
+                        <Image
+                          style={styles.profilePic2}
+                          source={photoURL ? {uri: photoURL} : null}
+                        />
+                      ) : (
+                        <Image
+                          style={styles.profilePic}
+                          source={photoURL ? {uri: photoURL} : null}
+                        />
+                      )}
+                    </View>
+                  );
+                } else {
+                  return <Ionicons name={iconName} size={size} color={color} />;
+                }
               }
 
               // You can return any component that you like here!
-              return <Ionicons name={iconName} size={size} color={color} />;
             },
             transparentCard: true,
           })}
@@ -137,6 +167,7 @@ const Navigator = () => {
             inactiveTintColor: 'gray',
             keyboardHidesTabBar: true,
             transparentCard: true,
+            showLabel: false,
           }}
           style={{backgroundColor: 'transparent'}}>
           {/* removed location as it was buggy */}
@@ -173,7 +204,7 @@ const Navigator = () => {
             )}
           />
           <Tab.Screen name="Flights" component={FlightTabNavigation} />
-          <Tab.Screen name="Covid Check" component={CovidTracker} />
+          {/* <Tab.Screen name="Covid Check" component={CovidTracker} /> */}
           <Tab.Screen name="Profile" component={Profile} />
         </Tab.Navigator>
       </ImageBackground>
@@ -186,7 +217,20 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
   },
-
+  profilePic: {
+    width: 35,
+    height: 35,
+    borderRadius: 50,
+    borderWidth: 3,
+    borderColor: 'grey',
+  },
+  profilePic2: {
+    width: 35,
+    height: 35,
+    borderRadius: 50,
+    borderWidth: 3,
+    borderColor: '#2D5EC6',
+  },
   image: {
     flex: 1,
     resizeMode: 'cover',

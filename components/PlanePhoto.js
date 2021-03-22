@@ -44,6 +44,7 @@ const PlanePhoto = (data) => {
         backgroundColor: 'white',
         overflow: 'hidden',
         borderRadius: 15,
+        elevation: 7,
       }}>
       {image && (
         <Image
@@ -55,9 +56,11 @@ const PlanePhoto = (data) => {
             borderColor: 'white',
           }}
           resizeMode={'cover'}
-          source={{
-            uri: 'data:image/png;base64,' + image,
-          }}></Image>
+          source={
+            'data:image/png;base64,' + image
+              ? {uri: 'data:image/png;base64,' + image}
+              : null
+          }></Image>
       )}
       <View
         style={{

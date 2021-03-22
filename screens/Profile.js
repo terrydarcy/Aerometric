@@ -58,13 +58,13 @@ const Profile = ({}) => {
           />
           <View
             style={{
-              textAlign: 'center',
               flexDirection: 'column',
               alignItems: 'flex-start',
+              flex: 1,
               justifyContent: 'center',
             }}>
             <Text style={styles.title}>{displayName}</Text>
-            <Text style={styles.text2}>{email}</Text>
+            <Text style={styles.textEmail}>{email}</Text>
           </View>
         </View>
       )}
@@ -99,15 +99,6 @@ const Profile = ({}) => {
             <Text style={styles.text}>0 Flights Searched</Text>
           )}
         </View>
-        <View style={[styles.statContainer, styles.green]}>
-          <Icon
-            name={'virus'}
-            style={{marginRight: 10}}
-            size={40}
-            color="white"
-          />
-          <Text style={styles.text}>0 Covid-19 Checks</Text>
-        </View>
       </View>
       <Text style={styles.subTitle}>Account Settings</Text>
       <View style={styles.settingsContainer}>
@@ -133,7 +124,7 @@ const styles = StyleSheet.create({
     flex: 2,
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
   StatsContainer: {
     borderTopWidth: 5,
@@ -197,9 +188,13 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   text2: {
-    textAlign: 'center',
     color: '#2B59C3',
     fontSize: 20,
+  },
+  textEmail: {
+    color: '#2B59C3',
+    fontSize: 20,
+    marginLeft: 20,
   },
 });
 
