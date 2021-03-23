@@ -11,6 +11,7 @@ import {useNavigation} from '@react-navigation/native';
 import {UserContext} from '../providers/UserProvider';
 import firestore from '@react-native-firebase/firestore';
 import firebase from '@react-native-firebase/app';
+import Config from 'react-native-config';
 
 const MapTab = ({currentLatitude, currentLongitude}) => {
   const [planesInBound, setPlanesInBound] = useState([]);
@@ -78,7 +79,7 @@ const MapTab = ({currentLatitude, currentLongitude}) => {
       url: 'https://flight-data4.p.rapidapi.com/get_flight_info',
       params: {flight: flightCode.trim().toUpperCase()},
       headers: {
-        'x-rapidapi-key': '0fc20f00e0msh4755d4ab30ecc56p14128ejsn344e954e3f0c',
+        'x-rapidapi-key': Config.RAPID_API_KEY,
         'x-rapidapi-host': 'flight-data4.p.rapidapi.com',
       },
     };

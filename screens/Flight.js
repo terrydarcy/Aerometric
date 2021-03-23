@@ -98,7 +98,8 @@ const Flight = ({navigation, route}) => {
           paddingBottom: 10,
           paddingHorizontal: 20,
           alignItems: 'center',
-          backgroundColor: '#2B59C3',
+          backgroundColor: 'white',
+          elevation: 7,
         }}>
         <TouchableOpacity
           activeOpacity={0.6}
@@ -198,10 +199,10 @@ const Flight = ({navigation, route}) => {
                 Latitude {route.params.flight['flight'].latitude}
               </Text>
               <Text style={styles.text1}>
-                Flight distance {route.params.flight['flight'].distance}km
+                Longitude {route.params.flight['flight'].longitude}
               </Text>
               <Text style={styles.text1}>
-                Longitude {route.params.flight['flight'].longitude}
+                Flight distance {route.params.flight['flight'].distance}km
               </Text>
               <Text style={styles.text1}>
                 Altitude {route.params.flight['flight'].altitude}ft
@@ -228,10 +229,6 @@ const Flight = ({navigation, route}) => {
             </View>
           </View>
         </View>
-        <PlanePhoto
-          aircraft={route.params.flight['aircraft']}
-          airline={route.params.flight['airline']}
-        />
         <Weather
           latitude={route.params.flight['arr_airport'].latitude}
           longitude={route.params.flight['arr_airport'].longitude}
@@ -239,6 +236,10 @@ const Flight = ({navigation, route}) => {
         <Covid
           latitude={route.params.flight['arr_airport'].latitude}
           longitude={route.params.flight['arr_airport'].longitude}
+        />
+        <PlanePhoto
+          aircraft={route.params.flight['aircraft']}
+          airline={route.params.flight['airline']}
         />
       </ScrollView>
     </View>
@@ -322,8 +323,8 @@ const styles = StyleSheet.create({
     marginVertical: 0,
     padding: 0,
     textAlign: 'center',
-    fontSize: 35,
-    color: 'white',
+    fontSize: 30,
+    color: 'black',
   },
   subTitle: {
     fontSize: 20,

@@ -19,6 +19,8 @@ import {UserContext} from '../providers/UserProvider';
 import Swipeable from 'react-native-swipeable-row';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import axios from 'axios';
+import Config from 'react-native-config';
+
 const mainColor = '#070707';
 
 const rightButtons = [
@@ -73,7 +75,7 @@ const FlightTab = ({navigation}) => {
       url: 'https://flight-data4.p.rapidapi.com/get_flight_info',
       params: {flight: flight['flight'].toUpperCase()},
       headers: {
-        'x-rapidapi-key': '0fc20f00e0msh4755d4ab30ecc56p14128ejsn344e954e3f0c',
+        'x-rapidapi-key': Config.FLIGHT_API_KEY,
         'x-rapidapi-host': 'flight-data4.p.rapidapi.com',
       },
     };
@@ -140,48 +142,59 @@ const FlightTab = ({navigation}) => {
       <Text style={{textAlign: 'center', color: 'red'}}>{error}</Text>
       <Text style={styles.subTitle}>Saved Flights</Text>
 
-      <FlatList
-        contentContainerStyle={styles.flightsContainer}
-        data={flights}
-        keyExtractor={(flight) => flights.indexOf(flight)}
-        renderItem={({item, index}) => (
-          <Swipeable
-            ref={(ref) => {
-              swipeable = ref;
-            }}
-            style={{
-              width: '100%',
-              height: 50,
-              backgroundColor: '#EBEDEE',
-              borderRadius: 15,
-              overflow: 'hidden',
-              marginTop: 10,
-            }}
-            rightButtons={rightButtons}
-            onRightActionRelease={() => removeFlightFromDB(item)}
-            key={index}>
-            <TouchableOpacity
-              onPress={() => navigateToFlight(item)}
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: '100%',
-                flexDirection: 'row',
-              }}>
-              <View style={{flexDirection: 'row'}}>
-                <Icon
-                  style={{marginRight: 10}}
-                  name={'plane'}
-                  size={25}
-                  color="#2B59C3"
-                />
+      {flights.length <= 0 ? (
+        <View style={styles.flightsContainer}>
+          <Text style={{textAlign: 'center', marginTop: 10}}>
+            Your saved flights will appear here
+          </Text>
+        </View>
+      ) : (
+        <View>
+          <FlatList
+            contentContainerStyle={styles.flightsContainer}
+            data={flights}
+            keyExtractor={(flight) => flights.indexOf(flight)}
+            renderItem={({item, index}) => (
+              <Swipeable
+                ref={(ref) => {
+                  swipeable = ref;
+                }}
+                style={{
+                  width: '96%',
+                  height: 50,
+                  backgroundColor: '#EBEDEE',
+                  borderRadius: 15,
+                  overflow: 'hidden',
+                  marginTop: 10,
+                  elevation: 7,
+                }}
+                rightButtons={rightButtons}
+                onRightActionRelease={() => removeFlightFromDB(item)}
+                key={index}>
+                <TouchableOpacity
+                  onPress={() => navigateToFlight(item)}
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: '100%',
+                    flexDirection: 'row',
+                  }}>
+                  <View style={{flexDirection: 'row'}}>
+                    <Icon
+                      style={{marginRight: 10}}
+                      name={'plane'}
+                      size={25}
+                      color="#2B59C3"
+                    />
 
-                <Text style={styles.subTitle}>{item.flight}</Text>
-              </View>
-            </TouchableOpacity>
-          </Swipeable>
-        )}
-      />
+                    <Text style={styles.subTitle}>{item.flight}</Text>
+                  </View>
+                </TouchableOpacity>
+              </Swipeable>
+            )}
+          />
+        </View>
+      )}
     </View>
   );
 };
@@ -199,7 +212,10 @@ const styles = StyleSheet.create({
     width: '100%',
     borderTopWidth: 5,
     borderRadius: 15,
-    borderColor: '#557acf',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: '#2B59C3',
+    paddingBottom: 20,
   },
   scrollView: {
     width: '100%',
@@ -219,16 +235,16 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 50,
-    color: '#2B59C3',
+    color: 'black',
   },
   subTitle: {
     fontSize: 22,
     textAlign: 'center',
-    color: '#557acf',
+    color: 'black',
   },
   subTitle2: {
     fontSize: 22,
-    color: '#557acf',
+    color: 'black',
   },
   body: {
     fontFamily: 'Roboto-Regular',

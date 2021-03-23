@@ -5,6 +5,7 @@ import axios from 'axios';
 import {UserContext} from '../providers/UserProvider';
 import firestore from '@react-native-firebase/firestore';
 import firebase from '@react-native-firebase/app';
+import Config from 'react-native-config';
 
 const mainColor = '#070707';
 
@@ -15,14 +16,14 @@ function SearchFlight({navigation}) {
   const user = useContext(UserContext);
 
   const navigateToFlight = (textVal) => {
+    console.log(Config.FLIGHT_API_KEY);
     if (textVal && textVal.length > 0) {
       const options = {
         method: 'GET',
         url: 'https://flight-data4.p.rapidapi.com/get_flight_info',
         params: {flight: textVal.toUpperCase()},
         headers: {
-          'x-rapidapi-key':
-            '0fc20f00e0msh4755d4ab30ecc56p14128ejsn344e954e3f0c',
+          'x-rapidapi-key': Config.FLIGHT_API_KEY,
           'x-rapidapi-host': 'flight-data4.p.rapidapi.com',
         },
       };

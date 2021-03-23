@@ -76,7 +76,7 @@ const Profile = ({}) => {
             name={'plane'}
             style={{marginRight: 10}}
             size={40}
-            color="white"
+            color="#2B59C3"
           />
           {flightsClicked ? (
             <Text style={styles.text}>
@@ -91,7 +91,7 @@ const Profile = ({}) => {
             name={'search'}
             style={{marginRight: 10}}
             size={40}
-            color="white"
+            color="#2B59C3"
           />
           {flightsSearched ? (
             <Text style={styles.text}>{flightsSearched} Flights Searched</Text>
@@ -108,7 +108,7 @@ const Profile = ({}) => {
             underlayColor="#ffd463"
             activeOpacity={0.6}
             onPress={() => logout()}>
-            <Text style={styles.text}>Log Out</Text>
+            <Text style={styles.text3}>Log Out</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -130,13 +130,13 @@ const styles = StyleSheet.create({
     borderTopWidth: 5,
 
     borderRadius: 15,
-    borderColor: '#557acf',
+    borderColor: '#2B59C3',
     flex: 3,
   },
   settingsContainer: {
     borderTopWidth: 5,
     borderRadius: 15,
-    borderColor: '#557acf',
+    borderColor: '#2B59C3',
     flex: 4,
   },
   profilePic: {
@@ -144,13 +144,14 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 50,
     borderWidth: 5,
-    borderColor: '#2B59C3',
+    borderColor: 'black',
   },
   logOutButton: {
     backgroundColor: '#557acf',
     padding: 10,
     marginVertical: 10,
     borderRadius: 15,
+    elevation: 7,
   },
   statContainer: {
     flex: 1,
@@ -159,40 +160,46 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 15,
     marginVertical: 10,
+    elevation: 7,
   },
   red: {
-    backgroundColor: '#b81809',
+    backgroundColor: 'white',
   },
   green: {
-    backgroundColor: '#09b80c',
+    backgroundColor: 'white',
   },
   yellow: {
-    backgroundColor: '#ffc93c',
+    backgroundColor: 'white',
   },
 
   title: {
     marginLeft: 15,
     textAlign: 'center',
     fontSize: 50,
-    color: '#2B59C3',
+    color: 'black',
   },
   subTitle: {
     marginLeft: 15,
     textAlign: 'center',
     fontSize: 22,
-    color: '#557acf',
+    color: 'black',
   },
   text: {
+    textAlign: 'center',
+    fontSize: 20,
+    color: 'black',
+  },
+  text3: {
     textAlign: 'center',
     fontSize: 20,
     color: 'white',
   },
   text2: {
-    color: '#2B59C3',
+    color: 'black',
     fontSize: 20,
   },
   textEmail: {
-    color: '#2B59C3',
+    color: 'black',
     fontSize: 20,
     marginLeft: 20,
   },

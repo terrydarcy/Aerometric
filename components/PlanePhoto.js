@@ -1,8 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
 import axios from 'axios';
-import plane from '../res/map_plane_rot.png';
+import {encode} from 'base-64';
 
+if (!global.btoa) {
+  global.btoa = encode;
+}
+
+import Config from 'react-native-config';
 const PlanePhoto = (data) => {
   const [image, setImage] = useState();
   var url = data.aircraft.photo2;
@@ -13,7 +18,7 @@ const PlanePhoto = (data) => {
       url: 'https://flight-data4.p.rapidapi.com/get_aircraft_photo',
       params: {image: url},
       headers: {
-        'x-rapidapi-key': '0fc20f00e0msh4755d4ab30ecc56p14128ejsn344e954e3f0c',
+        'x-rapidapi-key': Config.FLIGHT_API_KEY,
         'x-rapidapi-host': 'flight-data4.p.rapidapi.com',
       },
       responseType: 'arraybuffer',
