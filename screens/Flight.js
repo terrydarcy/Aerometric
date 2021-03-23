@@ -17,6 +17,7 @@ import firestore from '@react-native-firebase/firestore';
 import firebase from '@react-native-firebase/app';
 import Weather from '../components/Weather';
 import Covid from '../components/Covid';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const Flight = ({navigation, route}) => {
   const user = useContext(UserContext);
@@ -118,18 +119,23 @@ const Flight = ({navigation, route}) => {
           </Text>
         </View>
         {saved ? (
-          <TouchableOpacity
-            activeOpacity={0.6}
-            style={styles.addActive}
-            onPress={() => addtoDB()}>
-            <Ionicons name="checkmark-outline" color="white" size={30} />
+          <TouchableOpacity activeOpacity={0.6} onPress={() => addtoDB()}>
+            <Icon
+              name={'bookmark'}
+              style={{marginRight: 10}}
+              size={30}
+              color="green"
+              solid
+            />
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity
-            activeOpacity={0.6}
-            style={styles.back}
-            onPress={() => addtoDB()}>
-            <Ionicons name="add-outline" color="black" size={30} />
+          <TouchableOpacity activeOpacity={0.6} onPress={() => addtoDB()}>
+            <Icon
+              name={'bookmark'}
+              style={{marginRight: 10}}
+              size={30}
+              color="black"
+            />
           </TouchableOpacity>
         )}
       </View>
@@ -260,14 +266,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     backgroundColor: 'white',
   },
-  addActive: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 40,
-    height: 40,
-    borderRadius: 50,
-    backgroundColor: 'green',
-  },
+
   bg: {
     flex: 1,
     position: 'absolute',

@@ -117,6 +117,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 15,
     marginTop: 20,
+    elevation: 7,
   },
   splashImage: {
     width: 200,
@@ -141,11 +142,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffc93c',
     padding: 10,
     borderRadius: 15,
+    elevation: 7,
   },
   loginButton: {
     backgroundColor: '#09b80c',
     padding: 10,
     borderRadius: 15,
+    elevation: 7,
   },
   error: {
     color: 'red',
