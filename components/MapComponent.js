@@ -12,13 +12,15 @@ const MapComponent = ({
   arrivalAirport,
   departureAirport,
 }) => {
+  const [departureAirportNull, setDepartureAirportNull] = useState(false);
+  const [arrivalAirportNull, setArrivalAirportNull] = useState(false);
   const mapRef = createRef();
 
   var initRegion = {
     latitude: parseFloat(latitude),
     longitude: parseFloat(longitude),
-    latitudeDelta: 10,
-    longitudeDelta: 15,
+    latitudeDelta: 5,
+    longitudeDelta: 5,
   };
 
   var coordinates = [
@@ -36,6 +38,43 @@ const MapComponent = ({
     },
   ];
   useEffect(() => {
+    console.log(arrivalAirport, arrivalAirport.longitude);
+    if (
+      arrivalAirport.longitude == undefined ||
+      arrivalAirport.latitude === undefined
+    ) {
+      setArrivalAirportNull(true);
+      coordinates = [
+        {
+          latitude: parseFloat(departureAirport.latitude),
+          longitude: parseFloat(departureAirport.longitude),
+        },
+
+        {
+          latitude: parseFloat(latitude),
+          longitude: parseFloat(longitude),
+        },
+      ];
+    }
+
+    if (
+      departureAirport.longitude == undefined ||
+      departureAirport.latitude === undefined
+    ) {
+      setDepartureAirportNull(true);
+      coordinates = [
+        {
+          latitude: parseFloat(arrivalAirport.latitude),
+          longitude: parseFloat(arrivalAirport.longitude),
+        },
+        {
+          latitude: parseFloat(latitude),
+          longitude: parseFloat(longitude),
+        },
+      ];
+    }
+    console.log('test');
+
     mapRef.current.fitToCoordinates(coordinates, {
       animated: true,
     });
@@ -61,17 +100,21 @@ const MapComponent = ({
             },
           })
         }>
-        <Marker
-          coordinate={{
-            latitude: parseFloat(arrivalAirport.latitude),
-            longitude: parseFloat(arrivalAirport.longitude),
-          }}></Marker>
-        <Marker
-          image={departure}
-          coordinate={{
-            latitude: parseFloat(departureAirport.latitude),
-            longitude: parseFloat(departureAirport.longitude),
-          }}></Marker>
+        {!arrivalAirportNull && (
+          <Marker
+            coordinate={{
+              latitude: parseFloat(arrivalAirport.latitude),
+              longitude: parseFloat(arrivalAirport.longitude),
+            }}></Marker>
+        )}
+        {!departureAirportNull && (
+          <Marker
+            image={departure}
+            coordinate={{
+              latitude: parseFloat(departureAirport.latitude),
+              longitude: parseFloat(departureAirport.longitude),
+            }}></Marker>
+        )}
         <Marker
           image={plane}
           style={{

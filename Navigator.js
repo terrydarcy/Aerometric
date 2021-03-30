@@ -128,13 +128,34 @@ const Navigator = () => {
               size = 35;
               if (route.name === 'Map') {
                 iconName = focused ? 'earth' : 'earth-outline';
-                return <Ionicons name={iconName} size={size} color={color} />;
+                return (
+                  <Ionicons
+                    name={iconName}
+                    size={size}
+                    style={{width: 40}}
+                    color={color}
+                  />
+                );
               } else if (route.name === 'Covid Check') {
                 iconName = focused ? 'fitness' : 'fitness-outline';
-                return <Ionicons name={iconName} size={size} color={color} />;
+                return (
+                  <Ionicons
+                    name={iconName}
+                    size={size}
+                    style={{width: 40}}
+                    color={color}
+                  />
+                );
               } else if (route.name === 'Flights') {
                 iconName = focused ? 'airplane' : 'airplane-outline';
-                return <Ionicons name={iconName} size={size} color={color} />;
+                return (
+                  <Ionicons
+                    name={iconName}
+                    size={size}
+                    style={{width: 40}}
+                    color={color}
+                  />
+                );
               } else if (route.name === 'Profile') {
                 iconName = focused ? 'person-circle' : 'person-circle-outline';
                 if (user) {
@@ -169,7 +190,7 @@ const Navigator = () => {
             transparentCard: true,
             showLabel: false,
           }}
-          style={{backgroundColor: 'transparent'}}>
+          style={{backgroundColor: 'transparent', overflow: 'show'}}>
           {/* removed location as it was buggy */}
           {/* {console.log(locationStatus)}
             {locationStatus === 'You are Here' ? (

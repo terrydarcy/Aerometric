@@ -138,7 +138,7 @@ const Covid = ({latitude, longitude}) => {
 };
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 20,
+    marginBottom: 30,
     width: '90%',
     backgroundColor: 'white',
     overflow: 'hidden',

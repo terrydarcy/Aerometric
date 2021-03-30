@@ -2,12 +2,12 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
 import axios from 'axios';
 import {encode} from 'base-64';
+import Config from 'react-native-config';
 
 if (!global.btoa) {
   global.btoa = encode;
 }
 
-import Config from 'react-native-config';
 const PlanePhoto = (data) => {
   const [image, setImage] = useState();
   var url = data.aircraft.photo2;
@@ -44,7 +44,7 @@ const PlanePhoto = (data) => {
   return (
     <View
       style={{
-        marginVertical: 20,
+        marginBottom: 30,
         width: '90%',
         backgroundColor: 'white',
         overflow: 'hidden',
@@ -76,10 +76,11 @@ const PlanePhoto = (data) => {
           borderRadius: 15,
         }}>
         <Text style={styles.text}>{data.aircraft.desc}</Text>
-        <Text style={styles.text1}>Functional {data.aircraft.ff}</Text>
-        <Text style={styles.text1}>Registration {data.aircraft.reg}</Text>
-        <Text style={styles.text1}>Type {data.aircraft.type}</Text>
-        <Text style={styles.text1}>{data.airline.name} Airline</Text>
+        <Text style={styles.text1}>Functional: {data.aircraft.ff}</Text>
+        <Text style={styles.text1}>First Flight: {data.aircraft.ff_date}</Text>
+        <Text style={styles.text1}>Registration: {data.aircraft.reg}</Text>
+        <Text style={styles.text1}>Type: {data.aircraft.type}</Text>
+        <Text style={styles.text1}>Airline: {data.airline.name}</Text>
       </View>
     </View>
   );

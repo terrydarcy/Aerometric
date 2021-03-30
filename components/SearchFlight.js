@@ -80,6 +80,7 @@ function SearchFlight({navigation}) {
             fontSize: 15,
             paddingHorizontal: 20,
             color: mainColor,
+            width: '100%',
           }}
           onChangeText={(text) => setText({text})}
           placeholder="Enter flight code"

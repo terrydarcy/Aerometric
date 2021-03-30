@@ -1,12 +1,11 @@
-import React, {useEffect, useState, useContext} from 'react';
 import {View, StyleSheet, Image, Text, TouchableHighlight} from 'react-native';
-import {UserContext} from '../providers/UserProvider';
 import {capitalizeFirstLetter} from '../config/Util';
 import {useNavigation} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import firestore from '@react-native-firebase/firestore';
-import firebase from '@react-native-firebase/app';
+import React, {useEffect, useState, useContext} from 'react';
+import {UserContext} from '../providers/UserProvider';
 
 const Profile = ({}) => {
   const user = useContext(UserContext);

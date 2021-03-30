@@ -24,6 +24,7 @@ const Flight = ({navigation, route}) => {
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
+    console.log(route.params.flight);
     const userRef = firestore().doc(`Users/${user.uid}`);
 
     userRef.get().then(function (doc) {
@@ -202,16 +203,22 @@ const Flight = ({navigation, route}) => {
               }}>
               <Text style={styles.text}>Flight Aerometrics</Text>
               <Text style={styles.text1}>
-                Latitude {route.params.flight['flight'].latitude}
+                Callsign: {route.params.flight['flight'].callsign}
               </Text>
               <Text style={styles.text1}>
-                Longitude {route.params.flight['flight'].longitude}
+                Latitude: {route.params.flight['flight'].latitude}
               </Text>
               <Text style={styles.text1}>
-                Flight distance {route.params.flight['flight'].distance}km
+                Longitude: {route.params.flight['flight'].longitude}
               </Text>
               <Text style={styles.text1}>
-                Altitude {route.params.flight['flight'].altitude}ft
+                Flight Distance: {route.params.flight['flight'].distance}km
+              </Text>
+              <Text style={styles.text1}>
+                Altitude: {route.params.flight['flight'].altitude}ft
+              </Text>
+              <Text style={styles.text1}>
+                Ground Speed: {route.params.flight['flight'].groundspeed}mp/h
               </Text>
             </View>
             <View
@@ -235,6 +242,7 @@ const Flight = ({navigation, route}) => {
             </View>
           </View>
         </View>
+
         <Weather
           latitude={route.params.flight['arr_airport'].latitude}
           longitude={route.params.flight['arr_airport'].longitude}
@@ -247,6 +255,29 @@ const Flight = ({navigation, route}) => {
           aircraft={route.params.flight['aircraft']}
           airline={route.params.flight['airline']}
         />
+
+        <View style={styles.mapInfo}>
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: '#EBEDEE',
+              marginTop: 5,
+              borderRadius: 15,
+              paddingVertical: 5,
+              marginHorizontal: 5,
+              paddingHorizontal: 10,
+              marginBottom: 5,
+            }}>
+            <Text style={styles.text}>Data</Text>
+
+            <Text style={styles.text1}>
+              Sourced From: {route.params.flight.source}
+            </Text>
+            <Text style={styles.text1}>
+              Station: {route.params.flight.station}
+            </Text>
+          </View>
+        </View>
       </ScrollView>
     </View>
   );
@@ -293,6 +324,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderColor: 'white',
     elevation: 7,
+    marginBottom: 30,
   },
 
   mapContainer: {
@@ -307,7 +339,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     width: '100%',
-    paddingTop: 15,
+    paddingTop: 20,
     alignItems: 'center',
   },
   flightInfo: {
